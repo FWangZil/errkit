@@ -1,4 +1,4 @@
-// Package errors provides simple error handling primitives.
+// package errkit provides simple error handling primitives.
 //
 // The traditional error handling idiom in Go is roughly akin to
 //
@@ -90,7 +90,7 @@
 // considered a part of its stable public interface.
 //
 // See the documentation for Frame.Format for more details.
-package errors
+package errkit
 
 import (
 	"fmt"
@@ -229,7 +229,7 @@ func WithMessagef(err error, format string, args ...interface{}) error {
 	}
 	return &withMessage{
 		cause: err,
-		msg: fmt.Sprintf(format, args...),
+		msg:   fmt.Sprintf(format, args...),
 	}
 }
 
@@ -279,4 +279,21 @@ func Cause(err error) error {
 		err = cause.Cause()
 	}
 	return err
+}
+
+// Msg Msg
+func Msg(err error) string {
+	type msger interface {
+		Msg() string
+	}
+
+	for err != nil {
+		msg, ok := err.(msger)
+		if !ok {
+			break
+		}
+		return msg.Msg()
+	}
+
+	return err.Error()
 }

@@ -1,6 +1,6 @@
 // +build go1.7
 
-package errors
+package errkit
 
 import (
 	"fmt"

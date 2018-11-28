@@ -1,4 +1,4 @@
-package errors_test
+package errkit_test
 
 import (
 	"fmt"
